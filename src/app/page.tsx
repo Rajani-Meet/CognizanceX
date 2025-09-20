@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
@@ -13,6 +13,7 @@ import RoboticArmScene from "@/components/RoboticArmScene";
 import CuteRobotScene from "@/components/CuteRobotScene";
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 function HomePageContent() {
   const searchParams = useSearchParams();
@@ -1189,5 +1190,9 @@ x                </p>
 }
 
 export default function HomePage() {
-  return <HomePageContent />;
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-void-black text-star-white font-orbitron">Loading...</div>}>
+      <HomePageContent />
+    </Suspense>
+  );
 }
