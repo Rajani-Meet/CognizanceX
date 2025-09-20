@@ -1,0 +1,258 @@
+'use client'
+
+import React, { useEffect } from 'react'
+import { motion } from 'framer-motion'
+import Navigation from '@/components/Navigation'
+import Image from 'next/image'
+import Script from 'next/script'
+import { Target, Eye, Users, Globe, Award, Lightbulb, Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, MapPin, Phone } from 'lucide-react'
+
+declare module 'react' {
+  interface JSX {
+    IntrinsicElements: {
+      [elemName: string]: any;
+    }
+  }
+}
+
+export default function AboutPage() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  }
+
+  useEffect(() => {
+    // Add particles.js script
+    const script = document.createElement('script')
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js'
+    script.async = true
+    document.body.appendChild(script)
+
+    script.onload = () => {
+      // @ts-ignore - particles.js adds to window
+      if ((window as any).particlesJS) {
+        // @ts-ignore
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#00f7ff' },
+            shape: {
+              type: 'circle',
+              stroke: { width: 0, color: '#000000' },
+              polygon: { nb_sides: 5 }
+            },
+            opacity: {
+              value: 0.5,
+              random: false,
+              anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
+            },
+            size: {
+              value: 3,
+              random: true,
+              anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: '#00f7ff',
+              opacity: 0.2,
+              width: 1
+            },
+            move: {
+              enable: true,
+              speed: 2,
+              direction: 'none',
+              random: false,
+              straight: false,
+              out_mode: 'out',
+              bounce: false,
+              attract: { enable: false, rotateX: 600, rotateY: 1200 }
+            }
+          },
+          interactivity: {
+            detect_on: 'canvas',
+            events: {
+              onhover: { enable: true, mode: 'grab' },
+              onclick: { enable: true, mode: 'push' },
+              resize: true
+            },
+            modes: {
+              grab: { distance: 140, line_linked: { opacity: 1 } },
+              bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+              repulse: { distance: 200, duration: 0.4 },
+              push: { particles_nb: 4 },
+              remove: { particles_nb: 2 }
+            }
+          },
+          retina_detect: true
+        })
+      }
+    }
+
+    // Initialize counter animation
+    const animateCounters = () => {
+      const counters = document.querySelectorAll('.stat-number')
+      const speed = 200
+
+      counters.forEach(counter => {
+        const target = counter.getAttribute('data-target')
+        if (!target) return
+
+        const updateCount = () => {
+          const count = parseInt(counter.textContent || '0')
+          const inc = parseInt(target) / speed
+
+          if (count < parseInt(target)) {
+            counter.textContent = Math.ceil(count + inc).toString()
+            setTimeout(updateCount, 1)
+          } else {
+            counter.textContent = target
+          }
+        }
+
+        updateCount()
+      })
+    }
+
+    // Intersection Observer for stats section
+    const statsObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // Set target values
+          const statsElements = {
+            'participants-count': '10000',
+            'events-count': '50',
+            'speakers-count': '35',
+            'countries-count': '15'
+          }
+
+          Object.entries(statsElements).forEach(([id, value]) => {
+            const element = document.getElementById(id)
+            if (element) {
+              element.setAttribute('data-target', value)
+              element.textContent = '0'
+            }
+          })
+
+          animateCounters()
+          statsObserver.unobserve(entries[0].target)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    const statsSection = document.querySelector('.stats')
+    if (statsSection) {
+      statsObserver.observe(statsSection)
+    }
+
+    // Cleanup
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
+
+  const values = [
+    {
+      icon: Lightbulb,
+      title: 'Innovation',
+      description: 'Pushing the boundaries of AI and robotics to create groundbreaking solutions for tomorrow.'
+    },
+    {
+      icon: Users,
+      title: 'Collaboration',
+      description: 'Bringing together brilliant minds from academia, industry, and research institutions.'
+    },
+    {
+      icon: Globe,
+      title: 'Global Impact',
+      description: 'Creating technologies that positively impact communities worldwide.'
+    },
+    {
+      icon: Award,
+      title: 'Excellence',
+      description: 'Maintaining the highest standards in research, development, and technological advancement.'
+    }
+  ]
+
+  const milestones = [
+    {
+      year: '2020',
+      title: 'Foundation',
+      description: 'COGNIZANCE was established with a vision to bridge the gap between AI research and practical applications.'
+    },
+    {
+      year: '2021',
+      title: 'First Event',
+      description: 'Launched our inaugural event with 500+ participants and 15 groundbreaking presentations.'
+    },
+    {
+      year: '2022',
+      title: 'Global Expansion',
+      description: 'Extended our reach internationally, attracting speakers and participants from 25+ countries.'
+    },
+    {
+      year: '2023',
+      title: 'Innovation Hub',
+      description: 'Established permanent research partnerships with leading tech companies and universities.'
+    },
+    {
+      year: '2024',
+      title: 'AI Breakthrough',
+      description: 'Showcased revolutionary AI developments that shaped industry standards.'
+    },
+    {
+      year: '2025',
+      title: 'Record Growth',
+      description: 'Achieved unprecedented participation with 2000+ attendees and 50+ industry partners.'
+    }
+  ]
+
+  return (
+    <div className="min-h-screen">
+      {/* Particles Background */}
+      <div id="particles-js" className="fixed inset-0 z-0 pointer-events-none"></div>
+      <div className="cyber-grid fixed inset-0 z-0 opacity-30 pointer-events-none"></div>
+      <div className="cursor"></div>
+      
+      <Navigation />
+
+      {/* Hero Section */}
+      <section className="about-hero min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <motion.div
+          className="about-hero-content max-w-6xl mx-auto text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className="glitch font-orbitron font-bold text-6xl md:text-7xl lg:text-8xl gradient-text mb-4"
+            data-text="About COGNIZANCE"
+          >
+            About COGNIZANCE
+          </motion.h1>
+          <motion.p
+            variants={itemVariants}
+            className="text-xl text-star-white/80 font-rajdhani max-w-4xl mx-auto"
+          >
+            COGNIZANCE is the annual technical festival of CHARUSAT
+          </motion.p>
+        </motion.div>
+      </section>
+
+      {/* Rest of the sections... */}
+      
+    </div>
+  )
+}
